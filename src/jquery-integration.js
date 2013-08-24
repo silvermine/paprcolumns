@@ -28,7 +28,7 @@ $.paprcolumns = function(options) {
 
    // true for deep copy
    // {} so our defaults are not overridden
-   var settings = $.extend(true, {}, $.fn.paprcolumns.defaults, options);
+   var settings = $.extend(true, {}, $.paprcolumns.defaults, options);
    settings = validateSettings(settings);
    return settings;
 
