@@ -1,0 +1,5 @@
+#/bin/bash
+
+BASEDIR="$( dirname $( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd ) )"
+$BASEDIR/node_modules/lumbar/bin/lumbar watch "$BASEDIR/lumbar.json" "$BASEDIR/build/out"
+
