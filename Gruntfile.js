@@ -83,8 +83,7 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-contrib-qunit');
    grunt.loadNpmTasks('grunt-contrib-jshint');
 
-   // Default task.
-   grunt.registerTask('default', [
+   var allTasks = [
       'clean',
       'jshint:gruntfile',
       'jshint:test',
@@ -93,6 +92,11 @@ module.exports = function(grunt) {
       'jshint:dist',
       'qunit',
       'uglify'
-   ]);
+   ];
+
+   // Default task.
+   grunt.registerTask('default', allTasks);
+
+   grunt.registerTask('notest', _.without(_.extend([], allTasks), 'qunit'));
 
 };
