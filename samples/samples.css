@@ -1,0 +1,35 @@
+.header {
+   border-bottom: 1px solid black;
+}
+
+.footer {
+   clear: both;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+.columnized {
+}
+
+.col {
+   float: left;
+   padding: .5em;
+   border-right: 1px dashed gray;
+   margin-right: 4px;
+}
+
+.columnized .col:last-child {
+   border-right: none;
+}
+
+.columns-2 .col {
+   width: 45%;
+}
+
+.columns-3 .col {
+   width: 30%;
+}
+
+.columns-4 .col {
+   width: 22%;
+}

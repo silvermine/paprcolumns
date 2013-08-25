@@ -1,21 +1,46 @@
-function PaprColumnizer($element, settings) {
+function PaprColumnizer($elem, settings) {
 
-   this.$element = $element;
+   this.$elem = $elem;
    this.settings = settings;
 
 }
 
+
 PaprColumnizer.prototype.onAfterAdd = function() {
 
-   // this is where you put your code that actually initializes your component
-   // after it is added to the DOM object selected by the jQuery selector.
-   // you can access the element that this component was added to (there will
-   // only be one element since we initialize a unique component for each element
-   // returned by the selector) by using this.$element, which will be a jQuery
-   // object for the element.
+   this.prepareForColumnization();
 
-   var newContents = 'my component ran: ' +
-      (this.settings.something !== false ? this.settings.something : 'not overridden');
-   this.$element.html(newContents);
+   // columnize is implemented by subclasses
+   this.columnize();
 
+   this.afterColumnization();
+
+};
+
+
+PaprColumnizer.prototype.prepareForColumnization = function() {
+   // TODO: actual destination needs to be configurable
+   this.$dest = $('<div />');
+   this.$contents = this.$elem.children().clone(true);
+};
+
+
+PaprColumnizer.prototype.afterColumnization = function() {
+   this.$dest.find('.col').last().addClass('lastcol');
+
+   this.$elem.empty();
+   this.$elem.append(this.$dest);
+
+   this.equalizeColumnHeights();
+};
+
+
+PaprColumnizer.prototype.equalizeColumnHeights = function() {
+   var $cols = this.$dest.find('.col');
+   $cols.height($cols.height());
+};
+
+
+PaprColumnizer.prototype.createColumn = function(i) {
+   return $('<div />').attr('id', 'col-' + i).addClass('col');
 };

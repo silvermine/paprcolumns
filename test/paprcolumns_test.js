@@ -33,11 +33,4 @@
       strictEqual(this.elems.paprcolumns(), this.elems, 'should be chainable');
    });
 
-   var defaultText = 'my component ran: not overridden';
-
-   test('is paprcolumns', function() {
-      expect(1);
-      strictEqual(this.elems.paprcolumns().text(), defaultText + defaultText + defaultText, 'should have changed text');
-   });
-
 }(jQuery));
