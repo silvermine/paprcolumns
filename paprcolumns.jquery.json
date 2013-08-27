@@ -1,27 +1,27 @@
 {
-  "name": "paprcolumns",
-  "title": "jQuery paprcolumns",
-  "description": "jQuery plugin for breaking content into columns like a newspaper.",
-  "version": "0.1.0",
-  "homepage": "https://github.com/Silvermine/paprcolumns",
-  "author": {
-    "name": "Jeremy Thomerson",
-    "email": "jeremy@thomersonfamily.com",
-    "url": "http://jeremythomerson.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/Silvermine/paprcolumns.git"
-  },
-  "bugs": "https://github.com/Silvermine/paprcolumns/issues",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/Silvermine/paprcolumns/blob/master/LICENSE-MIT"
-    }
-  ],
-  "dependencies": {
-    "jquery": "*"
-  },
-  "keywords": []
+   "name": "paprcolumns",
+   "title": "jQuery paprcolumns",
+   "description": "jQuery plugin for breaking content into columns like a newspaper.",
+   "version": "0.1.0",
+   "homepage": "https://github.com/Silvermine/paprcolumns",
+   "author": {
+      "name": "Jeremy Thomerson",
+      "email": "jeremy@thomersonfamily.com",
+      "url": "http://jeremythomerson.com"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git://github.com/Silvermine/paprcolumns.git"
+   },
+   "bugs": "https://github.com/Silvermine/paprcolumns/issues",
+   "licenses": [
+      {
+         "type": "MIT",
+         "url": "https://github.com/Silvermine/paprcolumns/blob/master/LICENSE-MIT"
+      }
+   ],
+   "dependencies": {
+      "jquery": ">=1.9"
+   },
+   "keywords": []
 }
