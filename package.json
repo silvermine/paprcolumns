@@ -2,10 +2,13 @@
   "name": "jquery-plugin-object-oriented-lumbar",
   "version": "0.0.0-ignored",
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "grunt qunit"
+    "test": "grunt travis --verbose"
+  },
+  "dependencies": {
+     "jQuery": "~1.10"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.0",
