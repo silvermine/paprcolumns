@@ -4,6 +4,9 @@ jQuery plugin for breaking content into columns like a newspaper.
 
 ## Getting Started
 
+NOTE: there is not currently a released version of this plugin, so the links in the
+following paragraph will not yet work.
+
 Download the [production version][min] or the [development version][max].
 
 [min]: https://raw.github.com/Silvermine/paprcolumns/master/dist/paprcolumns.min.js
