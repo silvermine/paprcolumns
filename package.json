@@ -1,6 +1,8 @@
 {
-   "name": "jQuery paprcolumns",
-   "version": "0.0.0-ignored",
+   "name": "jquery-paprcolumns",
+   "description": "jQuery plugin for breaking content into columns like a newspaper.",
+   "version": "0.1.0",
+   "homepage": "https://github.com/silvermine/paprcolumns",
    "engines": {
       "node": ">= 0.10.0"
    },
