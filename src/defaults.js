@@ -8,6 +8,8 @@ $.paprcolumns.defaults = {
 
    columns: 2,
 
+   maxIterations: 20,
+
    targetHeightMaxOver: 100,
 
    targetHeightFuzz: 0.1

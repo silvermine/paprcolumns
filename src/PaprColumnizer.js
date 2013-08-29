@@ -38,6 +38,7 @@ PaprColumnizer.prototype.equalizeColumnHeights = function() {
    var $cols = this.$dest.find('.col'),
        max = Math.max.apply(null, $.makeArray($cols.map(function() { return $(this).height(); })));
    $cols.height(max);
+   debug('set all columns to max height: ' + max);
 };
 
 
@@ -47,15 +48,16 @@ PaprColumnizer.prototype.createColumn = function(i) {
 
 
 PaprColumnizer.prototype.splitInto = function($dest, $col, $contents, targetHeight) {
-   debug('splitInto(' + $dest.attr('id') + ':' + $dest.attr('class') + ')');
-   for (var i = 0; i < $contents.length; i++) {
+   debug('splitInto(' + $dest.attr('id') + ':' + $dest.attr('class') + ') -- ' + $contents.length);
+   $contents.each(function(index, el) {
       var prevHeight = $dest.outerHeight(true),
-          $el = $($contents[i]);
-      this.$contents = this.$contents.not($el);
+          $el = $(el);
       $el.detach().appendTo($dest);
-      if ($dest.height() >= targetHeight) {
+      if ($dest.outerHeight(true) >= targetHeight) {
+         $el.detach();
          debug('dest height: ' + $dest.outerHeight(true) + ' >= targetHeight: ' + targetHeight + ' (prev h: ' + prevHeight + ')');
-         return;
+         return false;
       }
-   }
+   });
+   return $contents.not($dest.contents());
 };
