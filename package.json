@@ -3,6 +3,10 @@
    "description": "jQuery plugin for breaking content into columns like a newspaper.",
    "version": "0.1.0",
    "homepage": "https://github.com/silvermine/paprcolumns",
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/silvermine/paprcolumns"
+   },
    "engines": {
       "node": ">= 0.10.0"
    },
