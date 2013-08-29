@@ -26,7 +26,7 @@
         "src/PaprColumnizer.js",
         "src/FixedNumberColumnizer.js",
         "src/jquery-integration.js",
-        "src/defaults.js",
+        "src/constants.js",
         "src/outro.js"
       ]
     }
