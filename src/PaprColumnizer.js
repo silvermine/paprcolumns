@@ -30,13 +30,14 @@ PaprColumnizer.prototype.prepareForColumnization = function() {
 PaprColumnizer.prototype.afterColumnization = function() {
    this.$dest.find('.col').last().addClass('lastcol');
 
-   // TODO correctly this.equalizeColumnHeights();
+   this.equalizeColumnHeights();
 };
 
 
 PaprColumnizer.prototype.equalizeColumnHeights = function() {
-   // var $cols = this.$dest.find('.col');
-   // TODO: get max and set all cols to max: $cols.height($cols.height());
+   var $cols = this.$dest.find('.col'),
+       max = Math.max.apply(null, $.makeArray($cols.map(function() { return $(this).height(); })));
+   $cols.height(max);
 };
 
 
