@@ -28,7 +28,7 @@ PaprColumnizer.prototype.prepareForColumnization = function() {
 
 
 PaprColumnizer.prototype.afterColumnization = function() {
-   this.$dest.find('.col').last().addClass('lastcol');
+   this.$dest.find('.col').last().addClass('lastcol').end().first().addClass('firstcol');
 
    this.equalizeColumnHeights();
 };
@@ -47,17 +47,87 @@ PaprColumnizer.prototype.createColumn = function(i) {
 };
 
 
-PaprColumnizer.prototype.splitInto = function($dest, $col, $contents, targetHeight) {
-   debug('splitInto(' + $dest.attr('id') + ':' + $dest.attr('class') + ') -- ' + $contents.length);
+PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) {
+   var paprcolumns = this, lastIndex = 0, $leftover = false;
    $contents.each(function(index, el) {
-      var prevHeight = $dest.outerHeight(true),
-          $el = $(el);
+      var $el = $(el);
       $el.detach().appendTo($dest);
-      if ($dest.outerHeight(true) >= targetHeight) {
+      lastIndex = index;
+
+      if (!acceptanceTest()) {
+         // take $el back out of the destination and split it
          $el.detach();
-         debug('dest height: ' + $dest.outerHeight(true) + ' >= targetHeight: ' + targetHeight + ' (prev h: ' + prevHeight + ')');
+         var $newDest = $el.clone(true),
+             $newContents = $newDest.contents();
+
+         $newDest.empty().appendTo($dest);
+
+         if ($newContents.length === 1 && $newContents.get(0).nodeType === Node.TEXT_NODE && $.trim($newContents.text()) !== '') {
+            // this is a text node to split
+            var leftoverText = paprcolumns.splitTextInto($newContents, $newDest, acceptanceTest);
+            if (leftoverText === false) {
+               // TODO: we need to handle this error situation or else we'll probably have an empty node in the column
+               debug('ERROR: we were not able to successfully split text');
+               leftoverText = $el.text();
+            }
+            $leftover = $el.text(leftoverText);
+            return false;
+         }
+
+         // TODO: if $newDest has an ID we need to change the ID, add the ID as a class, etc
+         $leftover = $el.empty().append(paprcolumns.splitInto($newContents, $newDest, acceptanceTest));
          return false;
       }
    });
-   return $contents.not($dest.contents());
+
+   return $('<div />')
+      .append($leftover)
+      .append($contents.splice(lastIndex + 1))
+      .contents();
+};
+
+
+PaprColumnizer.prototype.splitTextInto = function($textEl, $dest, acceptanceTest) {
+   var text = $textEl.text();
+   var splitLoc = this.findBestSplitLocation(text, $dest, acceptanceTest);
+
+   if (splitLoc === false) {
+      return false;
+   }
+
+   $dest.text(text.substr(0, splitLoc));
+   return text.substr(splitLoc);
+};
+
+
+PaprColumnizer.prototype.findBestSplitLocation = function(text, $dest, acceptanceTest) {
+   var range = { min: 0, max: text.length },
+       desiredSplit = Math.floor(text.length / 2),
+       best = false;
+   for (var i = 0; i < this.settings.maxTextIterations; i++) {
+
+      var wordBreak = this.findWordBreakNear(text, desiredSplit);
+      $dest.text(text.substr(0, wordBreak));
+      if (acceptanceTest()) {
+         best = range.min = wordBreak;
+      } else {
+         range.max = wordBreak;
+      }
+
+      // make our new split halfway between min and max
+      desiredSplit = (range.max - Math.floor((range.max - range.min) / 2));
+      if ((range.max - range.min) < this.settings.minTextIncrement) {
+         break;
+      }
+   }
+
+   return best;
+};
+
+
+PaprColumnizer.prototype.findWordBreakNear = function(text, desiredSplitLoc) {
+   // TODO: this is an extremely naive implementation ... it needs to look backward and
+   // forward as well as recognize word break characters and markup (i.e. <wbr />), not
+   // just relying on spaces
+   return text.indexOf(' ', desiredSplitLoc);
 };

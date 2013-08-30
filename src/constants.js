@@ -10,7 +10,11 @@ $.paprcolumns.defaults = {
 
    maxIterations: 20,
 
-   targetHeightMaxOver: 100,
+   maxTextIterations: 20,
+
+   minTextIncrement: 10,
+
+   targetHeightMaxOver: 50,
 
    targetHeightFuzz: 0.1
 

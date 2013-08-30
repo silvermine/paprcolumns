@@ -42,17 +42,20 @@ FixedNumberColumnizer.prototype.padHeight = function(basicHeight) {
 
 
 FixedNumberColumnizer.prototype.columnize = function() {
+   this.$dest.addClass('columnized').addClass('columns-' + this.settings.columns);
    this.columnizeToTargetHeight(this.calculateHeight(), 1);
 };
 
 FixedNumberColumnizer.prototype.columnizeToTargetHeight = function(targetHeight, iteration) {
    debug('fixed number columns: ' + this.settings.columns + '; to target height: ' + targetHeight + '; iteration: ' + iteration);
-   this.$dest.addClass('columns-' + this.settings.columns);
 
-   var $contents = this.$contents.clone(true);
+   var $contents = this.$contents.clone(true),
+       acceptanceTest = function() {
+          return $col.outerHeight(true) <= targetHeight;
+       };
    for (var i = 0; i < this.settings.columns; i++) {
       var $col = this.createColumn(i).appendTo(this.$dest);
-      $contents = this.splitInto($col, $col, $contents, targetHeight);
+      $contents = this.splitInto($contents, $col, acceptanceTest);
    }
    if ($contents.size() > 0) {
       debug('contents are left over: ' + $contents.size());
@@ -67,5 +70,4 @@ FixedNumberColumnizer.prototype.columnizeToTargetHeight = function(targetHeight,
       this.$dest.empty();
       return this.columnizeToTargetHeight(this.padHeight(targetHeight), iteration + 1);
    }
-   this.$dest.addClass('columnized');
 };
