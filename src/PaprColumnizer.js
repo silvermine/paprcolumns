@@ -33,6 +33,17 @@ PaprColumnizer.prototype.prepareForColumnization = function() {
 };
 
 
+PaprColumnizer.prototype.prepareSplitElement = function($orig, $newEl) {
+   $orig.addClass('split');
+   $newEl.addClass('split');
+   if ($orig.attr('id') !== undefined && $.trim($orig.attr('id')) !== '') {
+      var cls = $orig.attr('id') + '-splitID';
+      $orig.removeAttr('id').addClass(cls);
+      $newEl.removeAttr('id').addClass(cls);
+   }
+};
+
+
 PaprColumnizer.prototype.afterColumnization = function() {
    this.$dest.find('.col').last().addClass('lastcol').end().first().addClass('firstcol');
 
@@ -68,6 +79,8 @@ PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) 
 
          $newDest.empty().appendTo($dest);
 
+         paprcolumns.prepareSplitElement($el, $newDest);
+
          if ($newContents.length === 1 && $newContents.get(0).nodeType === Node.TEXT_NODE && $.trim($newContents.text()) !== '') {
             // this is a text node to split
             var leftoverText = paprcolumns.splitTextInto($newContents, $newDest, acceptanceTest);
@@ -80,7 +93,6 @@ PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) 
             return false;
          }
 
-         // TODO: if $newDest has an ID we need to change the ID, add the ID as a class, etc
          $leftover = $el.empty().append(paprcolumns.splitInto($newContents, $newDest, acceptanceTest));
          return false;
       }
