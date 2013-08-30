@@ -15,6 +15,12 @@ PaprColumnizer.prototype.onAfterAdd = function() {
 
    this.afterColumnization();
 
+   var paprcolumns = this;
+   $(window).resize(function() {
+      paprcolumns.$dest.find('.col').css('height', '');
+      paprcolumns.equalizeColumnHeights();
+   });
+
 };
 
 
