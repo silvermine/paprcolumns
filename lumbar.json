@@ -24,7 +24,7 @@
         "src/debug.js",
         "src/settings-validator.js",
         "src/PaprColumnizer.js",
-        "src/FixedNumberColumnizer.js",
+        "src/FixedColumnCountColumnizer.js",
         "src/jquery-integration.js",
         "src/constants.js",
         "src/outro.js"

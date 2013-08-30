@@ -1,5 +1,5 @@
 (function($) {
-   module('jQuery#FixedNumberColumnizer', {
+   module('jQuery#FixedColumnCountColumnizer', {
       setup: function() {
       }
    });

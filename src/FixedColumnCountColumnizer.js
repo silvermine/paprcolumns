@@ -1,10 +1,10 @@
-function FixedNumberColumnizer($elem, settings) {
+function FixedColumnCountColumnizer($elem, settings) {
 
    PaprColumnizer.call(this, $elem, settings);
 
 }
 
-FixedNumberColumnizer.validateSettings = function(settings) {
+FixedColumnCountColumnizer.validateSettings = function(settings) {
    settings.columns = parseInt(settings.columns, 10);
    if (isNaN(settings.columns) || settings.columns <= 0) {
       debug('invalid columns for FIXED_NUMBER mode: ' + settings.columns + ', using default');
@@ -12,11 +12,11 @@ FixedNumberColumnizer.validateSettings = function(settings) {
    }
 };
 
-FixedNumberColumnizer.prototype = new PaprColumnizer();
-FixedNumberColumnizer.prototype.constructor = FixedNumberColumnizer;
+FixedColumnCountColumnizer.prototype = new PaprColumnizer();
+FixedColumnCountColumnizer.prototype.constructor = FixedColumnCountColumnizer;
 
 
-FixedNumberColumnizer.prototype.calculateHeight = function() {
+FixedColumnCountColumnizer.prototype.calculateHeight = function() {
    this.$dest.empty();
    for (var i = 0; i < this.settings.columns; i++) {
       this.createColumn(i).appendTo(this.$dest);
@@ -33,7 +33,7 @@ FixedNumberColumnizer.prototype.calculateHeight = function() {
 };
 
 
-FixedNumberColumnizer.prototype.padHeight = function(basicHeight) {
+FixedColumnCountColumnizer.prototype.padHeight = function(basicHeight) {
    return parseInt(Math.min(
       basicHeight + this.settings.targetHeightMaxOver,
       (basicHeight * (1 + this.settings.targetHeightFuzz))
@@ -41,12 +41,12 @@ FixedNumberColumnizer.prototype.padHeight = function(basicHeight) {
 };
 
 
-FixedNumberColumnizer.prototype.columnize = function() {
+FixedColumnCountColumnizer.prototype.columnize = function() {
    this.$dest.addClass('columnized').addClass('columns-' + this.settings.columns);
    this.columnizeToTargetHeight(this.calculateHeight(), 1);
 };
 
-FixedNumberColumnizer.prototype.columnizeToTargetHeight = function(targetHeight, iteration) {
+FixedColumnCountColumnizer.prototype.columnizeToTargetHeight = function(targetHeight, iteration) {
    debug('fixed number columns: ' + this.settings.columns + '; to target height: ' + targetHeight + '; iteration: ' + iteration);
 
    var $contents = this.$contents.clone(true),

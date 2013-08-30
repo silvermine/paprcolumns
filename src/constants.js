@@ -3,7 +3,7 @@
 // object.
 
 $.paprcolumns.modes = {
-   'FIXED_NUMBER': FixedNumberColumnizer
+   'FIXED_NUMBER': FixedColumnCountColumnizer
 };
 
 $.paprcolumns.defaults = {
