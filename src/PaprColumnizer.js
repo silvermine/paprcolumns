@@ -107,7 +107,7 @@ PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) 
 
    return $('<div />')
       .append($leftover)
-      .append($contents.splice(lastIndex + 1))
+      .append($contents.slice(lastIndex + 1))
       .contents();
 };
 
