@@ -68,12 +68,19 @@ PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) 
    var paprcolumns = this, lastIndex = 0, $leftover = false;
    $contents.each(function(index, el) {
       var $el = $(el);
+
       $el.detach().appendTo($dest);
       lastIndex = index;
 
       if (!acceptanceTest()) {
-         // take $el back out of the destination and split it
+         // take $el back out of the destination
          $el.detach();
+
+         if ($el.hasClass('dontsplit')) {
+            lastIndex--;
+            return false;
+         }
+
          var $newDest = $el.clone(true),
              $newContents = $newDest.contents();
 
