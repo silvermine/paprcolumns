@@ -82,15 +82,15 @@ PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) 
          }
 
          var $newDest = $el.clone(true),
-             $newContents = $newDest.contents();
+             $newCont = $newDest.contents();
 
          $newDest.empty().appendTo($dest);
 
          paprcolumns.prepareSplitElement($el, $newDest);
 
-         if ($newContents.length === 1 && $newContents.get(0).nodeType === Node.TEXT_NODE && $.trim($newContents.text()) !== '') {
+         if ($newCont.length === 1 && $newCont.get(0).nodeType === NODE_TYPES.TEXT && $.trim($newCont.text()) !== '') {
             // this is a text node to split
-            var leftoverText = paprcolumns.splitTextInto($newContents, $newDest, acceptanceTest);
+            var leftoverText = paprcolumns.splitTextInto($newCont, $newDest, acceptanceTest);
             if (leftoverText === false) {
                // TODO: we need to handle this error situation or else we'll probably have an empty node in the column
                debug('ERROR: we were not able to successfully split text');
@@ -100,7 +100,7 @@ PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) 
             return false;
          }
 
-         $leftover = $el.empty().append(paprcolumns.splitInto($newContents, $newDest, acceptanceTest));
+         $leftover = $el.empty().append(paprcolumns.splitInto($newCont, $newDest, acceptanceTest));
          return false;
       }
    });
