@@ -3,24 +3,30 @@
 // object.
 
 $.paprcolumns.modes = {
-   'FIXED_NUMBER': FixedColumnCountColumnizer
+   FIXED_NUMBER: FixedColumnCountColumnizer,
+   FIXED_HEIGHT: FixedColumnHeightColumnizer
 };
 
 $.paprcolumns.defaults = {
 
+   // used by all columnizers:
    mode: $.paprcolumns.modes.FIXED_NUMBER,
-
-   columns: 2,
-
-   maxIterations: 20,
 
    maxTextIterations: 20,
 
    minTextIncrement: 10,
 
+   // used by FixedColumnCountColumnizer:
+   columns: 2,
+
+   maxIterations: 20,
+
    targetHeightMaxOver: 50,
 
-   targetHeightFuzz: 0.1
+   targetHeightFuzz: 0.1,
+
+   // used by FixedColumnHeightColumnizer:
+   columnHeight: 500
 
 };
 

@@ -12,6 +12,11 @@
    text-align: justify;
 }
 
+.columnized .colHolder {
+   float: left;
+   clear: both;
+}
+
 .columnized .col>:first-child {
    /* first child of every column */
    margin-top: 0px;
@@ -28,22 +33,33 @@
    margin-right: 4px;
 }
 
-.columns-2 .col {
+/* Things specific to FixedColumnCountColumnizer: */
+.fixedNumCols.columns-2 .col {
    width: 47%;
 }
 
-.columns-3 .col {
+.fixedNumCols.columns-3 .col {
    width: 30%;
 }
 
-.columns-4 .col {
+.fixedNumCols.columns-4 .col {
    width: 22%;
 }
 
-.columns-5 .col {
+.fixedNumCols.columns-5 .col {
    width: 17%;
 }
 
+/* Things specific to FixedColumnHeightColumnizer: */
+.columnized.fixedHeightCols {
+   overflow-x: scroll;
+}
+
+.columnized.fixedHeightCols .col {
+   width: 340px;
+}
+
+/* Things not specific to any columnization, but used for content inside columns: */
 .box {
    border: 1px solid grey;
    padding: 0.5em;

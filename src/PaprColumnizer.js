@@ -13,23 +13,29 @@ PaprColumnizer.prototype.onAfterAdd = function() {
    // columnize is implemented by subclasses
    this.columnize();
 
+   this.addFirstLastColClasses();
    this.afterColumnization();
 
    var paprcolumns = this;
    $(window).resize(function() {
-      paprcolumns.$dest.find('.col').css('height', '');
-      paprcolumns.equalizeColumnHeights();
+      paprcolumns.onWindowResize();
    });
+};
 
+
+PaprColumnizer.prototype.addFirstLastColClasses = function() {
+   this.$holder.find('.col').last().addClass('lastcol').end().first().addClass('firstcol');
 };
 
 
 PaprColumnizer.prototype.prepareForColumnization = function() {
-   // TODO: actual destination needs to be configurable
-   this.$dest = $('<div />');
    this.$contents = this.$elem.contents().clone(true);
    this.$elem.empty();
-   this.$elem.append(this.$dest);
+   // TODO: actual destination needs to be configurable
+   // destination is where the column holder will go
+   this.$dest = this.$elem.addClass('columnized');
+   // all columnizers should put their generated content into this.$holder
+   this.$holder = $('<div />').addClass('colHolder').appendTo(this.$dest);
 };
 
 
@@ -44,15 +50,19 @@ PaprColumnizer.prototype.prepareSplitElement = function($orig, $newEl) {
 };
 
 
-PaprColumnizer.prototype.afterColumnization = function() {
-   this.$dest.find('.col').last().addClass('lastcol').end().first().addClass('firstcol');
+PaprColumnizer.prototype.onWindowResize = function() {
+   this.equalizeColumnHeights();
+};
 
+
+PaprColumnizer.prototype.afterColumnization = function() {
+   this.$holder.find('.col').css('height', '');
    this.equalizeColumnHeights();
 };
 
 
 PaprColumnizer.prototype.equalizeColumnHeights = function() {
-   var $cols = this.$dest.find('.col'),
+   var $cols = this.$holder.find('.col'),
        max = Math.max.apply(null, $.makeArray($cols.map(function() { return $(this).height(); })));
    $cols.height(max);
    debug('set all columns to max height: ' + max);

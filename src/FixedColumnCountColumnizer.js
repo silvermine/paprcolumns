@@ -18,18 +18,18 @@ FixedColumnCountColumnizer.prototype.constructor = FixedColumnCountColumnizer;
 
 
 FixedColumnCountColumnizer.prototype.calculateHeight = function() {
-   this.$dest.empty();
+   this.$holder.empty();
    for (var i = 0; i < this.settings.columns; i++) {
-      this.createColumn(i).appendTo(this.$dest);
+      this.createColumn(i).appendTo(this.$holder);
    }
-   var totalHeight = this.$dest.find('.col').first().append(this.$contents.clone(true)).height();
+   var totalHeight = this.$holder.find('.col').first().append(this.$contents.clone(true)).height();
 
    var basicHeight = parseInt(totalHeight / this.settings.columns, 10);
    var height = this.padHeight(basicHeight);
    debug('elem height: ' + totalHeight + '; target height now: ' + height);
 
    // cleanup before returning
-   this.$dest.empty();
+   this.$holder.empty();
    return height;
 };
 
@@ -43,7 +43,7 @@ FixedColumnCountColumnizer.prototype.padHeight = function(basicHeight) {
 
 
 FixedColumnCountColumnizer.prototype.columnize = function() {
-   this.$dest.addClass('columnized').addClass('columns-' + this.settings.columns);
+   this.$dest.addClass('fixedNumCols').addClass('columns-' + this.settings.columns);
    this.columnizeToTargetHeight(this.calculateHeight(), 1);
 };
 
@@ -55,7 +55,7 @@ FixedColumnCountColumnizer.prototype.columnizeToTargetHeight = function(targetHe
           return $col.outerHeight(true) <= targetHeight;
        };
    for (var i = 0; i < this.settings.columns; i++) {
-      var $col = this.createColumn(i).appendTo(this.$dest);
+      var $col = this.createColumn(i).appendTo(this.$holder);
       $contents = this.splitInto($contents, $col, acceptanceTest);
    }
    if ($contents.size() > 0) {
@@ -64,11 +64,11 @@ FixedColumnCountColumnizer.prototype.columnizeToTargetHeight = function(targetHe
          // This is a fail-safe in case someone has content and configuration that
          // would make us go into an infinite loop trying to determine a height that
          // will work. Rather than do that, we just bloat the last columns and stop.
-         this.$dest.find('.col').last().append($contents);
+         this.$holder.find('.col').last().append($contents);
          debug('added all remaining contents to the last column because we are over max iterations');
          return;
       }
-      this.$dest.empty();
+      this.$holder.empty();
       return this.columnizeToTargetHeight(this.padHeight(targetHeight), iteration + 1);
    }
 };
