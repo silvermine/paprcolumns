@@ -33,4 +33,14 @@
       strictEqual(this.elems.paprcolumns(), this.elems, 'should be chainable');
    });
 
+   test('settings validation', function() {
+      var modeNames = Object.keys($.paprcolumns.modes);
+      expect(10 * modeNames.length);
+      for (var i = 0; i < modeNames.length; i++) {
+         var mode = $.paprcolumns.modes[modeNames[i]];
+         $.paprcolstests.alwaysBecomesPositiveInt(mode, 'maxTextIterations');
+         $.paprcolstests.alwaysBecomesPositiveInt(mode, 'minTextIncrement');
+      }
+   });
+
 }(jQuery));

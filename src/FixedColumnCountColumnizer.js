@@ -4,13 +4,14 @@ function FixedColumnCountColumnizer($elem, settings) {
 
 }
 
+
 FixedColumnCountColumnizer.validateSettings = function(settings) {
-   settings.columns = parseInt(settings.columns, 10);
-   if (isNaN(settings.columns) || settings.columns <= 0) {
-      debug('invalid columns for FIXED_NUMBER mode: ' + settings.columns + ', using default');
-      settings.columns = $.paprcolumns.defaults.columns;
-   }
+   forcePositiveInt(settings, 'columns');
+   forcePositiveInt(settings, 'maxIterations');
+   forcePositiveInt(settings, 'targetHeightMaxOver');
+   forceFloatBetweenZeroAndOne(settings, 'targetHeightFuzz');
 };
+
 
 FixedColumnCountColumnizer.prototype = new PaprColumnizer();
 FixedColumnCountColumnizer.prototype.constructor = FixedColumnCountColumnizer;
