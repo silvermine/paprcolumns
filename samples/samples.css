@@ -68,3 +68,21 @@
 .box p {
    margin-top: 0px;
 }
+
+img.flLeft {
+   float: left;
+   margin-right: 10px;
+   margin-bottom: 10px;
+}
+
+img.flRight {
+   float: right;
+   margin-left: 10px;
+   margin-bottom: 10px;
+}
+
+img.full {
+   display: block;
+   margin: auto;
+   margin-bottom: 10px;
+}
