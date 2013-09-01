@@ -6,8 +6,13 @@ function PaprColumnizer($elem, settings) {
 }
 
 
-PaprColumnizer.prototype.onAfterAdd = function() {
-
+PaprColumnizer.prototype.run = function() {
+   if (this.$elem.data('PaprColumnizer.COLUMNIZING')) {
+      debug('Columnizing is already happening');
+      return;
+   }
+   debug('starting columnization');
+   this.$elem.data('PaprColumnizer.COLUMNIZING', true);
    this.prepareForColumnization();
 
    // columnize is implemented by subclasses
@@ -15,8 +20,20 @@ PaprColumnizer.prototype.onAfterAdd = function() {
 
    this.addFirstLastColClasses();
    this.afterColumnization();
+   this.$elem.data('PaprColumnizer.COLUMNIZING', false);
 
+   this.bindEventHandlers();
+   debug('columnization done');
+};
+
+
+PaprColumnizer.prototype.bindEventHandlers = function() {
+   if (this.eventHandlersBound) {
+      return;
+   }
+   this.eventHandlersBound = true;
    var paprcolumns = this;
+
    $(window).resize(function() {
       paprcolumns.onWindowResize();
    });
@@ -29,7 +46,9 @@ PaprColumnizer.prototype.addFirstLastColClasses = function() {
 
 
 PaprColumnizer.prototype.prepareForColumnization = function() {
-   this.$contents = this.$elem.contents().clone(true);
+   if (!this.$contents) {
+      this.$contents = this.$elem.contents().clone(true);
+   }
    this.$elem.empty();
    // TODO: actual destination needs to be configurable
    // destination is where the column holder will go

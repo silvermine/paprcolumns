@@ -10,7 +10,7 @@ $.fn.paprcolumns = function(options) {
       var settings = $.paprcolumns(options);
       var component = new settings.mode($this, settings);
       $this.data('paprcolumns', component);
-      component.onAfterAdd();
+      component.run();
    });
 
    return this;
