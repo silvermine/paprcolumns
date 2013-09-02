@@ -37,6 +37,14 @@ PaprColumnizer.prototype.bindEventHandlers = function() {
    $(window).resize(function() {
       paprcolumns.onWindowResize();
    });
+   $(window).load(function() {
+      paprcolumns.$dest.find('img').each(function(ind, img) {
+         var $img = $(img), $ci = paprcolumns.$contents.find('img#' + $img.attr('id'));
+         $ci.height($img.height()).width($img.width());
+      });
+      debug('recolumnizing because window has finished loading');
+      paprcolumns.run();
+   });
 };
 
 
@@ -48,6 +56,9 @@ PaprColumnizer.prototype.addFirstLastColClasses = function() {
 PaprColumnizer.prototype.prepareForColumnization = function() {
    if (!this.$contents) {
       this.$contents = this.$elem.contents().clone(true);
+      this.$contents.find('img').each(function(ind, img) {
+         $(img).addClass('dontsplit').attr('id', 'img-' + ind);
+      });
    }
    this.$elem.empty();
    // TODO: actual destination needs to be configurable
