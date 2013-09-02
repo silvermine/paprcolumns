@@ -1,0 +1,92 @@
+.header {
+   border-bottom: 1px solid black;
+}
+
+.footer {
+   clear: both;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+.columnized {
+   text-align: justify;
+}
+
+.columnized .colHolder {
+   float: left;
+   clear: both;
+}
+
+.columnized .col>:first-child {
+   /* first child of every column */
+   margin-top: 0px;
+}
+
+.columnized .lastCol {
+   border-right: none;
+}
+
+.columnized .col {
+   float: left;
+   padding: .5em;
+   border-right: 1px dashed gray;
+   margin-right: 4px;
+}
+
+/* Things specific to FixedColumnCountColumnizer: */
+.fixedNumCols.columns-2 .col {
+   width: 47%;
+}
+
+.fixedNumCols.columns-3 .col {
+   width: 30%;
+}
+
+.fixedNumCols.columns-4 .col {
+   width: 22%;
+}
+
+.fixedNumCols.columns-5 .col {
+   width: 17%;
+}
+
+/* Things specific to FixedColumnHeightColumnizer: */
+.columnized.fixedHeightCols {
+   overflow-x: scroll;
+}
+
+.columnized.fixedHeightCols .col {
+   width: 340px;
+}
+
+/* Things not specific to any columnization, but used for content inside columns: */
+.box {
+   border: 1px solid grey;
+   padding: 0.5em;
+}
+
+.box p {
+   margin-top: 0px;
+}
+
+.columnized .col img {
+   max-width: 100%;
+}
+
+img.flLeft {
+   float: left;
+   margin-right: 10px;
+   margin-bottom: 10px;
+}
+
+img.flRight {
+   float: right;
+   margin-left: 10px;
+   margin-bottom: 10px;
+}
+
+img.full {
+   display: block;
+   margin: auto;
+   margin-bottom: 10px;
+}
