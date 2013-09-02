@@ -57,7 +57,14 @@ PaprColumnizer.prototype.prepareForColumnization = function() {
    if (!this.$contents) {
       this.$contents = this.$elem.contents().clone(true);
       this.$contents.find('img').each(function(ind, img) {
-         $(img).addClass('dontsplit').attr('id', 'img-' + ind);
+         var $img = $(img);
+         $img.addClass('dontsplit');
+         if ($.trim($img.attr('id')) === '') {
+            // we only want to force an ID on those images that do not already have one
+            // so that we do not break users' selectors that may be based on hard-coded
+            // or otherwise-assigned IDs
+            $img.attr('id', 'img-' + ind);
+         }
       });
    }
    this.$elem.empty();
