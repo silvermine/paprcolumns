@@ -147,6 +147,13 @@ PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) 
             $newDest.empty().appendTo($dest);
 
             paprcolumns.prepareSplitElement($el, $newDest);
+
+            // TODO: if nothing actually gets put into the split element in the first column
+            // you end up with an empty element in the column, which can sometimes be several
+            // levels deep
+            // (i.e. <div class="box split"><p class="split"><span class="splitTextNode"></span></p></div>)
+            // if we didn't put anything in, we should take the $newDest out of $dest
+
             $leftover = $el.empty().append(paprcolumns.splitInto($newCont, $newDest, acceptanceTest));
          }
          return false;
