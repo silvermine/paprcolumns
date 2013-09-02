@@ -110,26 +110,27 @@ PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) 
             return false;
          }
 
-         var $newDest = $el.clone(true),
-             $newCont = $newDest.contents();
+         if ($el.get(0).nodeType === NODE_TYPES.TEXT) {
+            var $textDest = $('<span class="splitTextNode" />').appendTo($dest),
+                leftoverText = paprcolumns.splitTextInto($el.text(), $textDest, acceptanceTest);
 
-         $newDest.empty().appendTo($dest);
-
-         paprcolumns.prepareSplitElement($el, $newDest);
-
-         if ($newCont.length === 1 && $newCont.get(0).nodeType === NODE_TYPES.TEXT && $.trim($newCont.text()) !== '') {
-            // this is a text node to split
-            var leftoverText = paprcolumns.splitTextInto($newCont, $newDest, acceptanceTest);
             if (leftoverText === false) {
-               // TODO: we need to handle this error situation or else we'll probably have an empty node in the column
+               // TODO: we need to think about what to do about this case...
                debug('ERROR: we were not able to successfully split text');
                leftoverText = $el.text();
             }
-            $leftover = $el.text(leftoverText);
-            return false;
-         }
 
-         $leftover = $el.empty().append(paprcolumns.splitInto($newCont, $newDest, acceptanceTest));
+            $el.text('');
+            $leftover = $('<span class="splitTextNode" />').text(leftoverText);
+         } else {
+            var $newDest = $el.clone(true),
+                $newCont = $newDest.contents();
+
+            $newDest.empty().appendTo($dest);
+
+            paprcolumns.prepareSplitElement($el, $newDest);
+            $leftover = $el.empty().append(paprcolumns.splitInto($newCont, $newDest, acceptanceTest));
+         }
          return false;
       }
    });
@@ -141,8 +142,7 @@ PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) 
 };
 
 
-PaprColumnizer.prototype.splitTextInto = function($textEl, $dest, acceptanceTest) {
-   var text = $textEl.text();
+PaprColumnizer.prototype.splitTextInto = function(text, $dest, acceptanceTest) {
    var splitLoc = this.findBestSplitLocation(text, $dest, acceptanceTest);
 
    if (splitLoc === false) {
