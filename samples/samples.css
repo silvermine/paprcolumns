@@ -69,6 +69,10 @@
    margin-top: 0px;
 }
 
+.columnized .col img {
+   max-width: 100%;
+}
+
 img.flLeft {
    float: left;
    margin-right: 10px;
