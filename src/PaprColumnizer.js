@@ -80,9 +80,15 @@ PaprColumnizer.prototype.prepareSplitElement = function($orig, $newEl) {
    $orig.addClass('split');
    $newEl.addClass('split');
    if ($orig.attr('id') !== undefined && $.trim($orig.attr('id')) !== '') {
-      var cls = $orig.attr('id') + '-splitID';
-      $orig.removeAttr('id').addClass(cls);
-      $newEl.removeAttr('id').addClass(cls);
+      var origID = $orig.attr('id'),
+          cls = origID + '-splitID';
+      $orig.removeAttr('id').addClass(cls).data('undosplit', function() {
+         this.attr('id', origID).removeClass(cls).removeClass('split');
+      });
+   } else {
+      $orig.data('undosplit', function() {
+         this.removeClass('split');
+      });
    }
 };
 
@@ -133,9 +139,11 @@ PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) 
                 leftoverText = paprcolumns.splitTextInto($el.text(), $textDest, acceptanceTest);
 
             if (leftoverText === false) {
-               // TODO: we need to think about what to do about this case...
-               debug('ERROR: we were not able to successfully split text');
-               leftoverText = $el.text();
+               // there was no point at which you could split the text and still meet the acceptance
+               // test, so basically we have ended up with an empty splitTextNode.
+               $textDest.remove();
+               lastIndex--;
+               return false;
             }
 
             $el.text('');
@@ -148,13 +156,18 @@ PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) 
 
             paprcolumns.prepareSplitElement($el, $newDest);
 
-            // TODO: if nothing actually gets put into the split element in the first column
-            // you end up with an empty element in the column, which can sometimes be several
-            // levels deep
-            // (i.e. <div class="box split"><p class="split"><span class="splitTextNode"></span></p></div>)
-            // if we didn't put anything in, we should take the $newDest out of $dest
-
             $leftover = $el.empty().append(paprcolumns.splitInto($newCont, $newDest, acceptanceTest));
+            if (paprcolumns.isEmptyOrEmptyTextNode($newDest.contents())) {
+               // we basically split an element and stuck it into the current column but then were not
+               // able to put anything into it that was accepted by the acceptance test, so we need to
+               // get our empty node back out of the current column since all of its contents are really
+               // going to end up in the next column anyway
+               $newDest.remove();
+               // and we want to undo the changes we made to the original element when we prepared it to
+               // be split by calling the undo function that was saved in the node by prepareSplitElement
+               $el.data('undosplit').call($el);
+            }
+            $el.removeData('undosplit');
          }
          return false;
       }
@@ -168,9 +181,10 @@ PaprColumnizer.prototype.splitInto = function($contents, $dest, acceptanceTest) 
 
 
 PaprColumnizer.prototype.splitTextInto = function(text, $dest, acceptanceTest) {
-   var splitLoc = this.findBestSplitLocation(text, $dest, acceptanceTest);
+   var splitLoc = this.findBestSplitLocation(text, $dest, acceptanceTest),
+       destText = splitLoc === false ? false : text.substr(0, splitLoc);
 
-   if (splitLoc === false) {
+   if (destText === false || $.trim(destText) === '') {
       return false;
    }
 
@@ -184,7 +198,6 @@ PaprColumnizer.prototype.findBestSplitLocation = function(text, $dest, acceptanc
        desiredSplit = Math.floor(text.length / 2),
        best = false;
    for (var i = 0; i < this.settings.maxTextIterations; i++) {
-
       var wordBreak = this.findWordBreakNear(text, desiredSplit);
       $dest.text(text.substr(0, wordBreak));
       if (acceptanceTest()) {
@@ -209,4 +222,10 @@ PaprColumnizer.prototype.findWordBreakNear = function(text, desiredSplitLoc) {
    // forward as well as recognize word break characters and markup (i.e. <wbr />), not
    // just relying on spaces
    return text.indexOf(' ', desiredSplitLoc);
+};
+
+
+PaprColumnizer.prototype.isEmptyOrEmptyTextNode = function($node) {
+   return $node.size() === 0 ||
+          ($node.size() === 1 && $node.get(0).nodeType === NODE_TYPES.TEXT && ($.trim($($node.get(0)).text()) === ''));
 };
