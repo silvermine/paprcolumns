@@ -199,11 +199,13 @@ PaprColumnizer.prototype.findBestSplitLocation = function(text, $dest, acceptanc
        best = false;
    for (var i = 0; i < this.settings.maxTextIterations; i++) {
       var wordBreak = this.findWordBreakNear(text, desiredSplit);
-      $dest.text(text.substr(0, wordBreak));
-      if (acceptanceTest()) {
-         best = range.min = wordBreak;
-      } else {
-         range.max = wordBreak;
+      if (wordBreak !== false) {
+         $dest.text(text.substr(0, wordBreak));
+         if (acceptanceTest()) {
+            best = range.min = wordBreak;
+         } else {
+            range.max = wordBreak;
+         }
       }
 
       // make our new split halfway between min and max
@@ -218,10 +220,14 @@ PaprColumnizer.prototype.findBestSplitLocation = function(text, $dest, acceptanc
 
 
 PaprColumnizer.prototype.findWordBreakNear = function(text, desiredSplitLoc) {
-   // TODO: this is an extremely naive implementation ... it needs to look backward and
-   // forward as well as recognize word break characters and markup (i.e. <wbr />), not
-   // just relying on spaces
-   return text.indexOf(' ', desiredSplitLoc);
+   // TODO: this is an extremely naive implementation ... it should look for more
+   // than just space characters
+   var down = text.lastIndexOf(' ', desiredSplitLoc),
+       up   = text.indexOf(' ', desiredSplitLoc);
+   if (down !== -1 && ((desiredSplitLoc - down) < (up - desiredSplitLoc))) {
+      return down;
+   }
+   return up === -1 ? false : up;
 };
 
 
