@@ -1,3 +1,8 @@
+# WARNING: UNMAINTAINED PROJECT
+
+This project is no longer supported or maintained. Please consider using a different
+project for new development.
+
 # jQuery paprcolumns
 
 jQuery plugin for breaking content into columns like a newspaper.
